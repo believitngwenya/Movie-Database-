@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineBase - Your Movie Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e50914;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #e50914;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-bar input {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            background: #333;
+            color: white;
+            width: 250px;
+        }
+
+        .search-bar button {
+            padding: 0.5rem 1rem;
+            background: #e50914;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-bar button:hover {
+            background: #b2070f;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://via.placeholder.com/1920x600/333/666?text=Featured+Movies');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            background: #e50914;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #b2070f;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #e50914;
+            border-left: 4px solid #e50914;
+            padding-left: 1rem;
+        }
+
+        /* Movies Grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .movie-card {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            padding: 1rem;
+        }
+
+        .movie-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .movie-rating {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .movie-genres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+
+        .genre-tag {
+            background: #333;
+            padding: 0.2rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        /* Filter Section */
+        .filters {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-select {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+
+        /* Movie Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            margin: 2rem auto;
+            max-width: 800px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            position: relative;
+        }
+
+        .modal-backdrop {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-poster {
+            width: 200px;
+            float: left;
+            margin-right: 2rem;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #e50914;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #e50914;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .search-bar input {
+                width: 200px;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .modal-poster {
+                float: none;
+                margin: 0 auto 1rem;
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .movies-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">CineBase</a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">TV Shows</a></li>
+                <li><a href="#">Celebrities</a></li>
+                <li><a href="#">News</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" placeholder="Search movies...">
+                <button>Search</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Amazing Movies</h1>
+            <p>Explore thousands of movies, TV shows, and celebrities. Find your next favorite film in our comprehensive database.</p>
+            <button class="cta-button">Explore Now</button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Filters -->
+        <section class="filters">
+            <div class="filter-group">
+                <select class="filter-select">
+                    <option>All Genres</option>
+                    <option>Action</option>
+                    <option>Comedy</option>
+                    <option>Drama</option>
+                    <option>Horror</option>
+                    <option>Sci-Fi</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Years</option>
+                    <option>2024</option>
+                    <option>2023</option>
+                    <option>2022</option>
+                    <option>2021</option>
+                </select>
+                <select class="filter-select">
+                    <option>Sort by Popularity</option>
+                    <option>Sort by Rating</option>
+                    <option>Sort by Release Date</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Featured Movies -->
+        <section>
+            <h2 class="section-title">Featured Movies</h2>
+            <div class="movies-grid">
+                <!-- Movie Card 1 -->
+                <div class="movie-card" onclick="openMovieModal(1)">
+                    <img src="https://via.placeholder.com/300x450/333/666?text=Movie+1" alt="Movie 1" class="movie-poster">
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Last Adventure</h3>
+                        <div class="movie-meta">
+                            <span>2024</span>
+                            <span class="movie-rating">★ 8.2</span>
+                        </div>
+                        <div class="movie-genres">
+                            <span class="genre-tag">Action</span>
+                            <span class="genre-tag">Adventure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 2 -->
+                <div class="movie-card" onclick="openMovieModal(2)">
+                    <img src="https://via.placeholder.com/300x450/333/666?text=Movie+2" alt="Movie 2" class="movie-poster">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Midnight in Paris</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="movie-rating">★ 7.8</span>
+                        </div>
+                        <div class="movie-genres">
+                            <span class="genre-tag">Romance</span>
+                            <span class="genre-tag">Drama</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 3 -->
+                <div class="movie-card" onclick="openMovieModal(3)">
+                    <img src="https://via.placeholder.com/300x450/333/666?text=Movie+3" alt="Movie 3" class="movie-poster">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Cyber Revolution</h3>
+                        <div class="movie-meta">
+                            <span>2024</span>
+                            <span class="movie-rating">★ 8.5</span>
+                        </div>
+                        <div class="movie-genres">
+                            <span class="genre-tag">Sci-Fi</span>
+                            <span class="genre-tag">Thriller</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 4 -->
+                <div class="movie-card" onclick="openMovieModal(4)">
+                    <img src="https://via.placeholder.com/300x450/333/666?text=Movie+4" alt="Movie 4" class="movie-poster">
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Lost Kingdom</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="movie-rating">★ 7.9</span>
+                        </div>
+                        <div class="movie-genres">
+                            <span class="genre-tag">Fantasy</span>
+                            <span class="genre-tag">Adventure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 5 -->
+                <div class="movie-card" onclick="openMovieModal(5)">
+                    <img src="https://via.placeholder.com/300x450/333/666?text=Movie+5" alt="Movie 5" class="movie-poster">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Laugh Out Loud</h3>
+                        <div class="movie-meta">
+                            <span>2024</span>
+                            <span class="movie-rating">★ 6.8</span>
+                        </div>
+                        <div class="movie-genres">
+                            <span class="genre-tag">Comedy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 6 -->
+                <div class="movie-card" onclick="openMovieModal(6)">
+                    <img src="https://via.placeholder.com/300x450/333/666?text=Movie+6" alt="Movie 6" class="movie-poster">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Dark Secrets</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="movie-rating">★ 8.1</span>
+                        </div>
+                        <div class="movie-genres">
+                            <span class="genre-tag">Horror</span>
+                            <span class="genre-tag">Mystery</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Now Playing -->
+        <section>
+            <h2 class="section-title">Now Playing</h2>
+            <div class="movies-grid">
+                <!-- Additional movie cards would go here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Movie Detail Modal -->
+    <div id="movieModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="https://via.placeholder.com/800x300/333/666?text=Movie+Backdrop" alt="Movie Backdrop" class="modal-backdrop">
+                <button class="modal-close" onclick="closeMovieModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <img src="https://via.placeholder.com/200x300/333/666?text=Movie+Poster" alt="Movie Poster" class="modal-poster">
+                <div class="modal-details">
+                    <h2>The Last Adventure</h2>
+                    <div class="movie-meta">
+                        <span>2024</span>
+                        <span>• 2h 15m</span>
+                        <span class="movie-rating">★ 8.2/10</span>
+                    </div>
+                    <div class="movie-genres">
+                        <span class="genre-tag">Action</span>
+                        <span class="genre-tag">Adventure</span>
+                        <span class="genre-tag">Thriller</span>
+                    </div>
+                    <p class="movie-plot">
+                        A thrilling adventure that takes viewers on an unforgettable journey through uncharted territories. 
+                        With stunning visuals and heart-pounding action sequences, this film redefines the adventure genre.
+                    </p>
+                    <div class="movie-details">
+                        <p><strong>Director:</strong> John Smith</p>
+                        <p><strong>Cast:</strong> Jane Doe, Michael Johnson, Sarah Wilson</p>
+                        <p><strong>Budget:</strong> $150 million</p>
+                        <p><strong>Box Office:</strong> $450 million</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About CineBase</h3>
+                <p>Your ultimate destination for movie information, reviews, and recommendations. Discover, explore, and enjoy cinema like never before.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Movies</a></li>
+                    <li><a href="#">TV Shows</a></li>
+                    <li><a href="#">Celebrities</a></li>
+                    <li><a href="#">News</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">DMCA</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 CineBase. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Modal functionality
+        function openMovieModal(movieId) {
+            document.getElementById('movieModal').style.display = 'block';
+            // In a real application, you would fetch movie details based on movieId
+            // and update the modal content accordingly
+        }
+
+        function closeMovieModal() {
+            document.getElementById('movieModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('movieModal');
+            if (event.target === modal) {
+                closeMovieModal();
+            }
+        }
+
+        // Search functionality
+        document.querySelector('.search-bar button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-bar input').value;
+            if (searchTerm) {
+                alert(`Searching for: ${searchTerm}`);
+                // In a real application, you would make an API call or filter movies
+            }
+        });
+
+        // Enter key for search
+        document.querySelector('.search-bar input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.search-bar button').click();
+            }
+        });
+    </script>
+</body>
+</html>
