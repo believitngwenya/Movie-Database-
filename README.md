@@ -1,55 +1,35 @@
-🎬 CineBase - Movie Database
-A modern, responsive movie database website built with HTML, CSS, and JavaScript. Discover thousands of movies, browse detailed information, and find your next favorite film.
+# OMEGA-MOVIES Streaming Platform
 
-https://via.placeholder.com/800x400/333/666?text=CineBase+Movie+Database
+A modern, responsive streaming platform for movies and TV shows built with HTML, CSS, and JavaScript.
 
-✨ Features
-🎥 Core Functionality
-Movie Discovery - Browse through an extensive collection of movies
+## Features
 
-Advanced Search - Find movies by title, genre, or year
+- 🎬 Trending movies and TV shows
+- 🔍 Search functionality
+- 🎨 Pink-themed responsive design
+- 🌙 Dark/Light mode toggle
+- 📱 Mobile-friendly interface
+- 🔄 Real-time data from TMDB API
 
-Smart Filtering - Filter by genre, release year, and popularity
+## Live Demo
 
-Detailed Movie Views - Comprehensive information including ratings, cast, and plot
+Visit: https://yourusername.github.io/omega-movies
 
-Responsive Design - Optimized for all devices (desktop, tablet, mobile)
+## Technologies Used
 
-🎨 User Experience
-Dark Theme - Easy on the eyes for extended browsing sessions
+- HTML5
+- CSS3 with CSS Variables
+- Vanilla JavaScript
+- Swiper.js for sliders
+- Font Awesome icons
+- TMDB API for movie data
 
-Interactive Cards - Hover effects and smooth animations
+## Local Development
 
-Modal Popups - Detailed movie information in elegant overlays
+1. Clone the repository
+2. Open `index.html` in your browser
+3. For full functionality, add your TMDB API key in `app.js`
 
-Fast Navigation - Intuitive layout and quick access to content
+## API Configuration
 
-📱 Sections & Pages
-Homepage - Featured movies and hero section
-
-Movie Grid - Organized display of movie cards
-
-Search Results - Filtered movie listings
-
-Movie Details - Comprehensive information pages
-
-Footer - Additional links and information
-
-🛠 Technologies Used
-HTML5 - Semantic markup and structure
-
-CSS3 - Modern styling with Flexbox and Grid
-
-JavaScript - Interactive functionality
-
-Responsive Design - Mobile-first approach
-
-CSS Variables - Consistent theming
-
-🚀 Quick Start
-Option 1: Direct File Opening
-Download the index.html file
-
-Open it directly in your web browser
-
-Start exploring the movie database!
+This project uses The Movie Database (TMDB) API. Get your free API key at [https://www.themoviedb.org/settings/api](https://www.themoviedb.org/settings/api)

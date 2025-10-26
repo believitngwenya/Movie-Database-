@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMEGA-MOVIES - Stream HD Movies & TV Shows</title>
+    <meta name="description" content="Watch latest movies and TV shows in HD quality. Unlimited streaming with OMEGA-MOVIES.">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#e70634">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+
+<body>
+    <!-- Progress Indicator -->
+    <div id="progress">
+        <span id="progress-value"><i class="fas fa-chevron-up"></i></span>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading OMEGA-MOVIES...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="nav-container">
+            <!-- Mobile Menu Button -->
+            <input type="checkbox" class="menu-btn" id="menu-btn">
+            <label for="menu-btn" class="menu-icon">
+                <span class="nav-icon"></span>
+            </label>
+
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <i class="fas fa-play-circle"></i>
+                OMEGA-MOVIES<span>.HD</span>
+            </a>
+            
+            <!-- Main Menu -->
+            <ul class="menu">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-tags"></i> Genre</a></li>
+                <li><a href="#"><i class="fas fa-tv"></i> TV Shows</a></li>
+                <li><a href="#"><i class="fas fa-film"></i> Movies</a></li>
+                <li><a href="#"><i class="fas fa-star"></i> Premium</a></li>
+                <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+            </ul>
+
+            <!-- Right Side Actions -->
+            <div class="nav-actions">
+                <!-- Search Box -->
+                <div class="search-container">
+                    <form action="" class="search-box">
+                        <input type="text" name="search" placeholder="Search movies, TV shows..." class="search-input" required>
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- User Actions -->
+                <div class="user-actions">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="user-btn" aria-label="User profile">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider Section -->
+    <section class="hero-slider">
+        <!-- Swiper -->
+        <div class="swiper mainSwiper">
+            <div class="swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="swiper-slide">
+                    <div class="hero-slide">
+                        <div class="slide-background">
+                            <img src="images/Latest/7.jpg" alt="Alpha & Omega" class="bg-image">
+                            <div class="bg-overlay"></div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="content-wrapper">
+                                <span class="quality-badge">4K ULTRA HD</span>
+                                <h1 class="movie-title">ALPHA & OMEGA</h1>
+                                <div class="movie-meta">
+                                    <span class="year">2024</span>
+                                    <span class="duration">2h 18m</span>
+                                    <span class="rating"><i class="fas fa-star"></i> 8.5/10</span>
+                                </div>
+                                <p class="movie-description">
+                                    An epic romance story that transcends time and space. Two souls destined to meet against all odds in a world full of mysteries and adventures.
+                                </p>
+                                <div class="movie-tags">
+                                    <span class="tag">Romance</span>
+                                    <span class="tag">Adventure</span>
+                                    <span class="tag">Drama</span>
+                                    <span class="tag">Fantasy</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-play"></i> Watch Now
+                                    </button>
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-plus"></i> Add to List
+                                    </button>
+                                    <button class="btn btn-icon" aria-label="More info">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="swiper-slide">
+                    <div class="hero-slide">
+                        <div class="slide-background">
+                            <img src="images/Latest/8.jpg" alt="Cosmic Odyssey" class="bg-image">
+                            <div class="bg-overlay"></div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="content-wrapper">
+                                <span class="quality-badge">FULL HD</span>
+                                <h1 class="movie-title">COSMIC ODYSSEY</h1>
+                                <div class="movie-meta">
+                                    <span class="year">2023</span>
+                                    <span class="duration">2h 35m</span>
+                                    <span class="rating"><i class="fas fa-star"></i> 9.1/10</span>
+                                </div>
+                                <p class="movie-description">
+                                    A thrilling space adventure that takes you beyond the stars. Join the crew of the starship Odyssey as they explore uncharted galaxies.
+                                </p>
+                                <div class="movie-tags">
+                                    <span class="tag">Sci-Fi</span>
+                                    <span class="tag">Adventure</span>
+                                    <span class="tag">Action</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-play"></i> Watch Now
+                                    </button>
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-plus"></i> Add to List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="swiper-slide">
+                    <div class="hero-slide">
+                        <div class="slide-background">
+                            <img src="images/Latest/download (1).jpg" alt="Echoes of Time" class="bg-image">
+                            <div class="bg-overlay"></div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="content-wrapper">
+                                <span class="quality-badge">4K ULTRA HD</span>
+                                <h1 class="movie-title">ECHOES OF TIME</h1>
+                                <div class="movie-meta">
+                                    <span class="year">2024</span>
+                                    <span class="duration">2h 5m</span>
+                                    <span class="rating"><i class="fas fa-star"></i> 8.7/10</span>
+                                </div>
+                                <p class="movie-description">
+                                    A mind-bending thriller about a detective who discovers he can travel through time to solve crimes, but each jump has unexpected consequences.
+                                </p>
+                                <div class="movie-tags">
+                                    <span class="tag">Thriller</span>
+                                    <span class="tag">Mystery</span>
+                                    <span class="tag">Sci-Fi</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-play"></i> Watch Now
+                                    </button>
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-plus"></i> Add to List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Controls -->
+            <div class="swiper-controls">
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access Bar -->
+    <section class="quick-access">
+        <div class="container">
+            <div class="access-grid">
+                <a href="#" class="access-item">
+                    <i class="fas fa-fire"></i>
+                    <span>Trending</span>
+                </a>
+                <a href="#" class="access-item">
+                    <i class="fas fa-rocket"></i>
+                    <span>New Releases</span>
+                </a>
+                <a href="#" class="access-item">
+                    <i class="fas fa-theater-masks"></i>
+                    <span>Genres</span>
+                </a>
+                <a href="#" class="access-item">
+                    <i class="fas fa-tv"></i>
+                    <span>TV Series</span>
+                </a>
+                <a href="#" class="access-item">
+                    <i class="fas fa-heart"></i>
+                    <span>My List</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Sections -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Trending Movies Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Trending Now</h2>
+                    <a href="#" class="see-all">See All <i class="fas fa-chevron-right"></i></a>
+                </div>
+                <div class="movies-grid" id="trending-movies">
+                    <!-- Movie Card 1 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/1.jpg" alt="Avengers: Endgame" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Avengers: Endgame</h3>
+                            <div class="movie-meta-small">
+                                <span>2019</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.4
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 2 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/2.jpg" alt="Spider-Man: No Way Home" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Spider-Man: No Way Home</h3>
+                            <div class="movie-meta-small">
+                                <span>2021</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.2
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 3 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/3.jpg" alt="The Batman" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">The Batman</h3>
+                            <div class="movie-meta-small">
+                                <span>2022</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 7.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 4 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/4.jpg" alt="Black Panther" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Black Panther</h3>
+                            <div class="movie-meta-small">
+                                <span>2018</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 7.3
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 5 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/5.jpg" alt="Inception" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Inception</h3>
+                            <div class="movie-meta-small">
+                                <span>2010</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 6 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/6.jpg" alt="Interstellar" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Interstellar</h3>
+                            <div class="movie-meta-small">
+                                <span>2014</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.6
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 7 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/1.jpg" alt="The Dark Knight" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">The Dark Knight</h3>
+                            <div class="movie-meta-small">
+                                <span>2008</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 9.0
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 8 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Trending/2.jpg" alt="Parasite" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Parasite</h3>
+                            <div class="movie-meta-small">
+                                <span>2019</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.6
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Latest Movies Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Latest Movies</h2>
+                    <a href="#" class="see-all">See All <i class="fas fa-chevron-right"></i></a>
+                </div>
+                <div class="movies-grid" id="latest-movies">
+                    <!-- Movie Card 1 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/7.jpg" alt="Dune: Part Two" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Dune: Part Two</h3>
+                            <div class="movie-meta-small">
+                                <span>2024</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.7
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 2 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/8.jpg" alt="Oppenheimer" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Oppenheimer</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.3
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 3 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/9.jpg" alt="Barbie" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Barbie</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 7.0
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 4 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/download (1).jpg" alt="The Creator" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">The Creator</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 6.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 5 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/download (2).jpg" alt="John Wick 4" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">John Wick 4</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 7.7
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 6 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/download.jpg" alt="Guardians 3" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Guardians 3</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 7.9
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 7 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/7.jpg" alt="Mission Impossible" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Mission Impossible</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 7.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 8 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/Latest/8.jpg" alt="Fast X" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Fast X</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 5.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popular TV Shows Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Popular TV Shows</h2>
+                    <a href="#" class="see-all">See All <i class="fas fa-chevron-right"></i></a>
+                </div>
+                <div class="movies-grid" id="tv-shows">
+                    <!-- TV Show Card 1 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv1.jpg" alt="Stranger Things" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Stranger Things</h3>
+                            <div class="movie-meta-small">
+                                <span>2016</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.7
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TV Show Card 2 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv2.jpg" alt="The Last of Us" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">The Last of Us</h3>
+                            <div class="movie-meta-small">
+                                <span>2023</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TV Show Card 3 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv3.jpg" alt="The Mandalorian" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">The Mandalorian</h3>
+                            <div class="movie-meta-small">
+                                <span>2019</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TV Show Card 4 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv4.jpg" alt="Breaking Bad" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Breaking Bad</h3>
+                            <div class="movie-meta-small">
+                                <span>2008</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 9.5
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TV Show Card 5 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv5.jpg" alt="Game of Thrones" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Game of Thrones</h3>
+                            <div class="movie-meta-small">
+                                <span>2011</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 9.2
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TV Show Card 6 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv6.jpg" alt="The Crown" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">The Crown</h3>
+                            <div class="movie-meta-small">
+                                <span>2016</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.6
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TV Show Card 7 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv7.jpg" alt="Wednesday" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">Wednesday</h3>
+                            <div class="movie-meta-small">
+                                <span>2022</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.2
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TV Show Card 8 -->
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="images/TV-shows/tv8.jpg" alt="The Witcher" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="quick-action-btn">
+                                        <i class="fas fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title-small">The Witcher</h3>
+                            <div class="movie-meta-small">
+                                <span>2019</span>
+                                <span class="movie-rating">
+                                    <i class="fas fa-star"></i> 8.0
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h3>Stay Updated</h3>
+                <p>Get notified about new releases and exclusive content</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="index1.html" class="footer-logo">
+                        <i class="fas fa-play-circle"></i>
+                        OMEGA-MOVIES<span>.HD</span>
+                    </a>
+                    <p class="footer-description">
+                        Your ultimate destination for HD movies and TV shows. Stream anywhere, anytime.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Movies</a></li>
+                        <li><a href="#">TV Shows</a></li>
+                        <li><a href="#">New Releases</a></li>
+                        <li><a href="#">Trending</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Comedy</a></li>
+                        <li><a href="#">Drama</a></li>
+                        <li><a href="#">Horror</a></li>
+                        <li><a href="#">Sci-Fi</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2024 OMEGA-MOVIES. All rights reserved.</p>
+                <div class="footer-badges">
+                    <span class="badge">HD Quality</span>
+                    <span class="badge">4K Available</span>
+                    <span class="badge">Safe Streaming</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

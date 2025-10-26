@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMEGA-MOVIES | HD Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        /* Your existing CSS styles here */
+        :root {
+            --primary-color: #e70634;
+            --primary-dark: #c1052c;
+            --secondary-color: #1a1d29;
+            --accent-color: #00b2ff;
+            --text-color: #ffffff;
+            --text-secondary: #b0b3c1;
+            --bg-dark: #0f111d;
+            --bg-card: #1a1d29;
+            --transition: all 0.3s ease;
+        }
+
+        /* Add to your existing CSS */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            width: 100%;
+        }
+
+        .error-message {
+            text-align: center;
+            color: var(--primary-color);
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .movie-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 15px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10001;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing HTML structure -->
+    <div id="progress">
+        <span id="progress-value">0%</span>
+    </div>
+
+    <nav class="navigation">
+        <!-- Your existing navigation -->
+    </nav>
+
+    <!-- Add API status indicator -->
+    <div id="api-status" style="display: none; background: #4CAF50; color: white; padding: 10px; text-align: center;">
+        API Connected Successfully
+    </div>
+
+    <section id="main-slider">
+        <div class="container">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper" id="slider-container">
+                    <!-- Dynamic content will be loaded here -->
+                    <div class="loading-container">
+                        <div class="loading"></div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="slider-btns">
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="latest-movies">
+        <div class="container">
+            <div class="latest-heading">
+                <h1>Latest Movies</h1>
+                <div class="filter-options" id="genre-filters">
+                    <!-- Dynamic genre filters will be loaded here -->
+                </div>
+            </div>
+
+            <div class="post-container" id="movies-container">
+                <!-- Dynamic movies will be loaded here -->
+                <div class="loading-container">
+                    <div class="loading"></div>
+                </div>
+            </div>
+
+            <div class="page-number" id="pagination">
+                <!-- Dynamic pagination will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Movie Detail Modal -->
+    <div class="movie-detail-modal" id="movieModal">
+        <div class="modal-content" id="modalContent">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <!-- Movie details will be loaded here -->
+        </div>
+    </div>
+
+    <footer>
+        <!-- Your existing footer -->
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // API Configuration
+        const API_CONFIG = {
+            TMDB_API_KEY: 'YOUR_TMDB_API_KEY', // Get from https://www.themoviedb.org/settings/api
+            TMDB_BASE_URL: 'https://api.themoviedb.org/3',
+            IMAGE_BASE_URL: 'https://image.tmdb.org/t/p',
+            DEFAULT_LANGUAGE: 'en-US',
+            DEFAULT_REGION: 'US'
+        };
+
+        // State management
+        let currentPage = 1;
+        let currentGenre = null;
+        let currentMovies = [];
+        let genres = [];
+
+        // DOM Elements
+        const elements = {
+            sliderContainer: document.getElementById('slider-container'),
+            moviesContainer: document.getElementById('movies-container'),
+            genreFilters: document.getElementById('genre-filters'),
+            pagination: document.getElementById('pagination'),
+            movieModal: document.getElementById('movieModal'),
+            modalContent: document.getElementById('modalContent'),
+            closeModal: document.getElementById('closeModal'),
+            apiStatus: document.getElementById('api-status'),
+            searchForm: document.querySelector('.search-box')
+        };
+
+        // Utility Functions
+        const utils = {
+            // Show loading state
+            showLoading: (container) => {
+                container.innerHTML = `
+                    <div class="loading-container">
+                        <div class="loading"></div>
+                    </div>
+                `;
+            },
+
+            // Show error message
+            showError: (container, message) => {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>${message}</p>
+                        <button onclick="location.reload()" style="background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            },
+
+            // Format movie rating
+            formatRating: (rating) => {
+                return rating ? rating.toFixed(1) : 'N/A';
+            },
+
+            // Get image URL with fallback
+            getImageUrl: (path, size = 'w500') => {
+                if (!path) return 'https://via.placeholder.com/500x750/1a1d29/ffffff?text=No+Image';
+                return `${API_CONFIG.IMAGE_BASE_URL}/${size}${path}`;
+            },
+
+            // Format movie duration
+            formatDuration: (minutes) => {
+                if (!minutes) return 'N/A';
+                const hours = Math.floor(minutes / 60);
+                const mins = minutes % 60;
+                return `${hours}h ${mins}m`;
+            }
+        };
+
+        // API Functions
+        const api = {
+            // Generic fetch function with error handling
+            fetchData: async (url) => {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('API Error:', error);
+                    throw error;
+                }
+            },
+
+            // Get trending movies for slider
+            getTrendingMovies: async () => {
+                const url = `${API_CONFIG.TMDB_BASE_URL}/trending/movie/week?api_key=${API_CONFIG.TMDB_API_KEY}&language=${API_CONFIG.DEFAULT_LANGUAGE}`;
+                return await api.fetchData(url);
+            },
+
+            // Get popular movies
+            getPopularMovies: async (page = 1) => {
+                const url = `${API_CONFIG.TMDB_BASE_URL}/movie/popular?api_key=${API_CONFIG.TMDB_API_KEY}&language=${API_CONFIG.DEFAULT_LANGUAGE}&page=${page}&region=${API_CONFIG.DEFAULT_REGION}`;
+                return await api.fetchData(url);
+            },
+
+            // Get movie genres
+            getGenres: async () => {
+                const url = `${API_CONFIG.TMDB_BASE_URL}/genre/movie/list?api_key=${API_CONFIG.TMDB_API_KEY}&language=${API_CONFIG.DEFAULT_LANGUAGE}`;
+                return await api.fetchData(url);
+            },
+
+            // Get movies by genre
+            getMoviesByGenre: async (genreId, page = 1) => {
+                const url = `${API_CONFIG.TMDB_BASE_URL}/discover/movie?api_key=${API_CONFIG.TMDB_API_KEY}&language=${API_CONFIG.DEFAULT_LANGUAGE}&page=${page}&with_genres=${genreId}&sort_by=popularity.desc`;
+                return await api.fetchData(url);
+            },
+
+            // Search movies
+            searchMovies: async (query, page = 1) => {
+                const url = `${API_CONFIG.TMDB_BASE_URL}/search/movie?api_key=${API_CONFIG.TMDB_API_KEY}&language=${API_CONFIG.DEFAULT_LANGUAGE}&query=${encodeURIComponent(query)}&page=${page}&include_adult=false`;
+                return await api.fetchData(url);
+            },
+
+            // Get movie details
+            getMovieDetails: async (movieId) => {
+                const url = `${API_CONFIG.TMDB_BASE_URL}/movie/${movieId}?api_key=${API_CONFIG.TMDB_API_KEY}&language=${API_CONFIG.DEFAULT_LANGUAGE}&append_to_response=credits,videos`;
+                return await api.fetchData(url);
+            }
+        };
+
+        // UI Rendering Functions
+        const render = {
+            // Render slider movies
+            renderSlider: (movies) => {
+                if (!movies || movies.length === 0) {
+                    utils.showError(elements.sliderContainer, 'No trending movies found');
+                    return;
+                }
+
+                const slides = movies.slice(0, 8).map(movie => `
+                    <div class="swiper-slide">
+                        <div class="main-slider-box">
+                            <a href="#" class="main-slider-overlay" onclick="openMovieDetail(${movie.id})">
+                                <i class="fas fa-play"></i>
+                            </a>
+                            <div class="main-slider-img">
+                                <img src="${utils.getImageUrl(movie.backdrop_path, 'w1280')}" alt="${movie.title}" loading="lazy">
+                            </div>
+                            <div class="main-slider-text">
+                                <span class="quality">${movie.vote_average > 7 ? '4K Ultra HD' : 'Full HD'}</span>
+                                <div class="bottom-text">
+                                    <div class="movie-name">
+                                        <span>${new Date(movie.release_date).getFullYear()}</span>
+                                        <strong>${movie.title}</strong>
+                                    </div>
+                                    <div class="category-rating">
+                                        <div class="category">
+                                            ${movie.genre_ids && movie.genre_ids.length > 0 ? 
+                                                movie.genre_ids.slice(0, 2).map(genreId => {
+                                                    const genre = genres.find(g => g.id === genreId);
+                                                    return genre ? `<a href="#">${genre.name}</a>` : '';
+                                                }).join(', ') : 'Movie'
+                                            }
+                                        </div>
+                                        <div class="rating">
+                                            ${utils.formatRating(movie.vote_average)} <i class="fas fa-star" style="color: #ffc107;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                elements.sliderContainer.innerHTML = slides;
+                
+                // Reinitialize Swiper after dynamic content
+                if (window.swiperInstance) {
+                    window.swiperInstance.destroy();
+                }
+                window.swiperInstance = new Swiper(".mySwiper", swiperConfig);
+            },
+
+            // Render movie grid
+            renderMovies: (movies, showPagination = true, totalPages = 1) => {
+                if (!movies || movies.length === 0) {
+                    elements.moviesContainer.innerHTML = `
+                        <div class="error-message" style="grid-column: 1 / -1;">
+                            <i class="fas fa-film"></i>
+                            <p>No movies found. Try a different search or filter.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const movieCards = movies.map(movie => `
+                    <div class="post-box">
+                        <div class="post-img">
+                            <img src="${utils.getImageUrl(movie.poster_path)}" alt="${movie.title}" loading="lazy">
+                        </div>
+                        <div class="main-slider-text">
+                            <span class="quality">${movie.vote_average > 7 ? 'HD' : 'SD'}</span>
+                            <div class="bottom-text">
+                                <div class="movie-name">
+                                    <span>${new Date(movie.release_date).getFullYear()}</span>
+                                    <a href="#" onclick="openMovieDetail(${movie.id}); return false;">${movie.title}</a>
+                                </div>
+                                <div class="category-rating">
+                                    <div class="category">
+                                        ${movie.genre_ids && movie.genre_ids.length > 0 ? 
+                                            movie.genre_ids.slice(0, 2).map(genreId => {
+                                                const genre = genres.find(g => g.id === genreId);
+                                                return genre ? `<a href="#">${genre.name}</a>` : '';
+                                            }).join(', ') : 'Movie'
+                                        }
+                                    </div>
+                                    <div class="rating">
+                                        ${utils.formatRating(movie.vote_average)} <i class="fas fa-star" style="color: #ffc107;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                elements.moviesContainer.innerHTML = movieCards;
+
+                // Render pagination if needed
+                if (showPagination && totalPages > 1) {
+                    render.renderPagination(totalPages);
+                } else {
+                    elements.pagination.innerHTML = '';
+                }
+            },
+
+            // Render genre filters
+            renderGenreFilters: () => {
+                const genreButtons = genres.map(genre => `
+                    <button class="filter-btn ${currentGenre === genre.id ? 'active' : ''}" 
+                            onclick="filterByGenre(${genre.id})">
+                        ${genre.name}
+                    </button>
+                `).join('');
+
+                elements.genreFilters.innerHTML = `
+                    <button class="filter-btn ${currentGenre === null ? 'active' : ''}" 
+                            onclick="filterByGenre(null)">
+                        All
+                    </button>
+                    ${genreButtons}
+                `;
+            },
+
+            // Render pagination
+            renderPagination: (totalPages) => {
+                const pages = [];
+                const maxVisiblePages = 5;
+                
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+
+                // Previous button
+                if (currentPage > 1) {
+                    pages.push(`<a href="#" onclick="changePage(${currentPage - 1}); return false;"><i class="fas fa-chevron-left"></i></a>`);
+                }
+
+                // Page numbers
+                for (let i = startPage; i <= endPage; i++) {
+                    pages.push(`<a href="#" class="${i === currentPage ? 'page-active' : ''}" onclick="changePage(${i}); return false;">${i}</a>`);
+                }
+
+                // Next button
+                if (currentPage < totalPages) {
+                    pages.push(`<a href="#" onclick="changePage(${currentPage + 1}); return false;"><i class="fas fa-chevron-right"></i></a>`);
+                }
+
+                elements.pagination.innerHTML = pages.join('');
+            },
+
+            // Render movie details modal
+            renderMovieDetails: (movie) => {
+                const directors = movie.credits?.crew?.filter(person => person.job === 'Director') || [];
+                const cast = movie.credits?.cast?.slice(0, 6) || [];
+                const trailer = movie.videos?.results?.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+
+                elements.modalContent.innerHTML = `
+                    <button class="close-modal" id="closeModal">&times;</button>
+                    <div style="position: relative;">
+                        <div style="height: 400px; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${utils.getImageUrl(movie.backdrop_path, 'w1280')}'); background-size: cover; background-position: center; border-radius: 15px 15px 0 0; display: flex; align-items: flex-end; padding: 30px;">
+                            <div style="display: flex; gap: 20px; align-items: flex-end;">
+                                <img src="${utils.getImageUrl(movie.poster_path)}" alt="${movie.title}" style="width: 150px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                                <div>
+                                    <h2 style="font-size: 28px; margin-bottom: 10px;">${movie.title} (${new Date(movie.release_date).getFullYear()})</h2>
+                                    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
+                                        <span class="quality" style="font-size: 14px;">${utils.formatDuration(movie.runtime)}</span>
+                                        <span class="quality" style="background: #00b2ff;">${utils.formatRating(movie.vote_average)}</span>
+                                        <span style="color: var(--text-secondary);">${movie.genres?.map(g => g.name).join(', ')}</span>
+                                    </div>
+                                    ${trailer ? `
+                                        <button onclick="playTrailer('${trailer.key}')" style="background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                            <i class="fas fa-play"></i> Watch Trailer
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 30px;">
+                            <h3 style="margin-bottom: 15px;">Overview</h3>
+                            <p style="line-height: 1.6; margin-bottom: 25px; color: var(--text-secondary);">${movie.overview || 'No overview available.'}</p>
+                            
+                            ${directors.length > 0 ? `
+                                <div style="margin-bottom: 20px;">
+                                    <h4 style="margin-bottom: 10px;">Director${directors.length > 1 ? 's' : ''}</h4>
+                                    <p style="color: var(--text-secondary);">${directors.map(d => d.name).join(', ')}</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${cast.length > 0 ? `
+                                <div>
+                                    <h4 style="margin-bottom: 15px;">Cast</h4>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
+                                        ${cast.map(actor => `
+                                            <div style="text-align: center;">
+                                                <img src="${utils.getImageUrl(actor.profile_path, 'w185')}" alt="${actor.name}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 8px;">
+                                                <p style="font-size: 12px; color: var(--text-secondary);">${actor.name}</p>
+                                                <p style="font-size: 11px; color: var(--primary-color);">${actor.character}</p>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+        };
+
+        // Main Application Functions
+        const app = {
+            // Initialize the application
+            init: async () => {
+                try {
+                    // Show API status
+                    elements.apiStatus.style.display = 'block';
+                    setTimeout(() => {
+                        elements.apiStatus.style.display = 'none';
+                    }, 3000);
+
+                    // Load genres
+                    await app.loadGenres();
+                    
+                    // Load trending movies for slider
+                    await app.loadTrendingMovies();
+                    
+                    // Load popular movies
+                    await app.loadPopularMovies();
+
+                    // Setup event listeners
+                    app.setupEventListeners();
+
+                } catch (error) {
+                    console.error('App initialization failed:', error);
+                    utils.showError(elements.moviesContainer, 'Failed to load movies. Please check your API key.');
+                }
+            },
+
+            // Load genres
+            loadGenres: async () => {
+                try {
+                    const data = await api.getGenres();
+                    genres = data.genres;
+                    render.renderGenreFilters();
+                } catch (error) {
+                    console.error('Failed to load genres:', error);
+                }
+            },
+
+            // Load trending movies for slider
+            loadTrendingMovies: async () => {
+                utils.showLoading(elements.sliderContainer);
+                try {
+                    const data = await api.getTrendingMovies();
+                    render.renderSlider(data.results);
+                } catch (error) {
+                    utils.showError(elements.sliderContainer, 'Failed to load trending movies');
+                }
+            },
+
+            // Load popular movies
+            loadPopularMovies: async (page = 1) => {
+                utils.showLoading(elements.moviesContainer);
+                try {
+                    const data = await api.getPopularMovies(page);
+                    currentMovies = data.results;
+                    render.renderMovies(data.results, true, data.total_pages);
+                } catch (error) {
+                    utils.showError(elements.moviesContainer, 'Failed to load movies');
+                }
+            },
+
+            // Setup event listeners
+            setupEventListeners: () => {
+                // Search form
+                elements.searchForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const searchInput = elements.searchForm.querySelector('.search-input');
+                    const query = searchInput.value.trim();
+                    
+                    if (query) {
+                        app.searchMovies(query);
+                    }
+                    
+                    searchInput.value = '';
+                });
+
+                // Close modal
+                elements.closeModal.addEventListener('click', () => {
+                    elements.movieModal.style.display = 'none';
+                });
+
+                // Close modal when clicking outside
+                elements.movieModal.addEventListener('click', (e) => {
+                    if (e.target === elements.movieModal) {
+                        elements.movieModal.style.display = 'none';
+                    }
+                });
+
+                // Escape key to close modal
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        elements.movieModal.style.display = 'none';
+                    }
+                });
+            },
+
+            // Search movies
+            searchMovies: async (query, page = 1) => {
+                utils.showLoading(elements.moviesContainer);
+                try {
+                    const data = await api.searchMovies(query, page);
+                    currentMovies = data.results;
+                    render.renderMovies(data.results, true, data.total_pages);
+                    
+                    // Update page title for search results
+                    document.title = `Search: ${query} - OMEGA-MOVIES`;
+                } catch (error) {
+                    utils.showError(elements.moviesContainer, 'Search failed. Please try again.');
+                }
+            }
+        };
+
+        // Global functions for HTML onclick events
+        window.filterByGenre = async (genreId) => {
+            currentGenre = genreId;
+            currentPage = 1;
+            
+            utils.showLoading(elements.moviesContainer);
+            render.renderGenreFilters();
+            
+            try {
+                let data;
+                if (genreId) {
+                    data = await api.getMoviesByGenre(genreId, currentPage);
+                } else {
+                    data = await api.getPopularMovies(currentPage);
+                }
+                
+                currentMovies = data.results;
+                render.renderMovies(data.results, true, data.total_pages);
+            } catch (error) {
+                utils.showError(elements.moviesContainer, 'Failed to load movies');
+            }
+        };
+
+        window.changePage = async (page) => {
+            currentPage = page;
+            utils.showLoading(elements.moviesContainer);
+            
+            try {
+                let data;
+                if (currentGenre) {
+                    data = await api.getMoviesByGenre(currentGenre, page);
+                } else {
+                    data = await api.getPopularMovies(page);
+                }
+                
+                currentMovies = data.results;
+                render.renderMovies(data.results, true, data.total_pages);
+                
+                // Scroll to top of movies section
+                document.getElementById('latest-movies').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            } catch (error) {
+                utils.showError(elements.moviesContainer, 'Failed to load movies');
+            }
+        };
+
+        window.openMovieDetail = async (movieId) => {
+            utils.showLoading(elements.modalContent);
+            elements.movieModal.style.display = 'flex';
+            
+            try {
+                const movie = await api.getMovieDetails(movieId);
+                render.renderMovieDetails(movie);
+            } catch (error) {
+                elements.modalContent.innerHTML = `
+                    <button class="close-modal" id="closeModal">&times;</button>
+                    <div class="error-message">
+                        Failed to load movie details
+                    </div>
+                `;
+            }
+        };
+
+        window.playTrailer = (youtubeKey) => {
+            window.open(`https://www.youtube.com/watch?v=${youtubeKey}`, '_blank');
+        };
+
+        // Swiper configuration
+        const swiperConfig = {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            loop: true,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                640: { slidesPerView: 2, spaceBetween: 20 },
+                768: { slidesPerView: 3, spaceBetween: 30 },
+                1024: { slidesPerView: 4, spaceBetween: 40 },
+            },
+        };
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+</html>
